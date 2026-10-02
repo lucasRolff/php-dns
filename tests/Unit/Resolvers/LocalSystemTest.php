@@ -32,6 +32,22 @@ class LocalSystemTest extends BaseTestAbstract
     /**
      * @test
      */
+    public function acceptsDefaultNullAndInjectedDependencies(): void
+    {
+        foreach ([
+            new LocalSystem(),
+            new LocalSystem(null),
+            new LocalSystem(null, null),
+            new LocalSystem(null, $this->localSystemMapper),
+            new LocalSystem($this->dnsClient, $this->localSystemMapper),
+        ] as $resolver) {
+            $this->assertInstanceOf(ResolverAbstract::class, $resolver);
+        }
+    }
+
+    /**
+     * @test
+     */
     public function hasOrDoesNotHaveRecord() : void
     {
         $record = DNSRecord::createFromPrimitives('A', 'facebook.com', 1726, IPAddress::createFromString('192.169.1.1'));
